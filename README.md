@@ -13,7 +13,7 @@ Your team can revise/add more sections; however, it is highly recommended that y
 
 1. Amit Gaddi, gaddiat@mail.uc.edu
 2. Member 2, email
-3. Member 3, email
+3. Taraka Ram Annapaneni, annapatm@mail.uc.edu
 
 # Project Management Information
 
@@ -105,7 +105,7 @@ Duration: DD/MM/YYYY-DD/MM/YYYY
 
 1. Member 1, x commits, y hours, contributed in xxx
 2. Member 2, x commits, y hours, contributed in xxx
-3. Member 3, x commits, y hours, contributed in xxx
+3. Taraka Ram Annapaneni, x commits, y hours, contributed in xxx
 4. Member 4, x commits, y hours, contributed in xxx
 
 ### Sprint 1
@@ -122,7 +122,7 @@ Duration: MM/DD/YYYY-MM/DD/YYYY
 
 1. Member 1, x commits, y hours, contributed in xxx
 2. Member 2, x commits, y hours, contributed in xxx
-3. Member 3, x commits, y hours, contributed in xxx
+3. Taraka Ram Annapaneni, x commits, y hours, contributed in xxx
 4. Member 4, x commits, y hours, contributed in xxx
 
 #### Sprint Retrospection:
@@ -153,7 +153,7 @@ Duration: MM/DD/YYYY-MM/DD/YYYY
 
 1. Member 1, x commits, y hours, contributed in xxx
 2. Member 2, x commits, y hours, contributed in xxx
-3. Member 3, x commits, y hours, contributed in xxx
+3. Taraka Ram Annapaneni, y hours, contributed in xxx
 4. Member 4, x commits, y hours, contributed in xxx
 
 #### Sprint Retrospection: 
