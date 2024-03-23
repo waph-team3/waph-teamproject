@@ -1,13 +1,10 @@
 # README.md Template
 
-*NOTE*: _This is just a tentative template for your team to start working on sprint 0. It is a minimum requirement for your project's final report and can be updated later.
-Your team can revise/add more sections; however, it is highly recommended that you seek approval from the instructor for a pull request._
-
 # WAPH-Web Application Programming and Hacking
 
 ## Instructor: Dr. Phu Phung
 
-# Project Topic/Title
+# Project Mini Facebook
 
 # Team members
 
@@ -17,15 +14,15 @@ Your team can revise/add more sections; however, it is highly recommended that y
 
 # Project Management Information
 
-Source code repository (private access): <https://github.com/***>
+Source code repository (private access): <https://github.com/waph-team3/waph-teamproject>
 
-Project homepage (public): <https://***.github.io>
+Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
 
 ## Revision History
 
 | Date       |   Version     |  Description |
 |------------|:-------------:|-------------:|
-| DD/MM/YYYY |  0.0          | Init draft   |
+| 24/03/2024 |  0.0          | Init draft   |
 
 
 # Overview
@@ -82,6 +79,8 @@ _You need to capture screenshots to demonstrate how your web application works. 
 *   CSRF attack to delete a post should be detected and prevented
 *   A regular logged-in user cannot access the link for superusers
 *   A logged-in user can have a real-time chat with other logged-in users
+
+![Amitindex.png](Amitindex.png)
 
 # Software Process Management
 
