@@ -67,21 +67,13 @@ The offered code samples do not explicitly explain role separation. However, est
 
 # Demo (screenshots)
 
-_You need to capture screenshots to demonstrate how your web application works. The screenshots must be accompanied by a short description of its functionalities following the implementation as below:_
-
-*   Everyone can register a new account and then login
-*   Superuser can disable an account
-    *   The disabled account cannot log in 
-    *   Superuser can enable the disabled account
-    *   The enabled user can log in	
-*   A regular logged-in user can delete her own existing posts but cannot delete the posts of others
-*   CSRF attack to delete a post should be detected and prevented
-*   A regular logged-in user cannot access the link for superusers
-*   A logged-in user can have a real-time chat with other logged-in users
-* A screenshot demo for the login system working on the HTTPS team's local domain  
-
+* A screenshot demo for the login page working on the HTTPS team's local domain  
 ![Form.png-](images/Form.png)
+
+* A screenshot demo for the welcome page working on the HTTPS team's local domain  
 ![index.png-](images/Index.png)
+
+* A screenshot demo for the logout page working on the HTTPS team's local domain  
 ![lougout.png-](images/Logout.png)
 
 * One screenshot demo for each team member of the index.html page on the HTTPS team's local domain  
