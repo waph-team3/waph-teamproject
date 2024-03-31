@@ -11,7 +11,7 @@
 
 	session_start();  
 
-	require "database.php"
+	require "database.php";
 	if (isset($_POST["username"]) and isset($_POST["password"])){
 		if (checklogin_mysql($_POST["username"],$_POST["password"])) {
 			$_SESSION['authenticated'] = TRUE;

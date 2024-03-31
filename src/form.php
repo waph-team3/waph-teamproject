@@ -19,8 +19,8 @@
   echo "Visited time: " . date("Y-m-d h:i:sa")
 ?>
     <form action="index.php" method="POST" class="form login">
-    Username: <input type="email" class="text_field" name="username" required pattern="^[\w.-]+@[\w-]+(.[\w-]+)*$" title="Email address is required as username" placeholder="Username in email" onchange="this.setCustomValidity(this.validity.patternMismatch ? this.title : '');"> <br>
-    Password: <input type="password" class="text_field" name="password"> <br>
+    Username: <input type="type" class="text_field" name="username"/> <br>
+    Password: <input type="password" class="text_field" name="password" /> <br>
     <button class="button" type="submit">Login</button>
   </form>
 </body>

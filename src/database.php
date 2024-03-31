@@ -10,7 +10,7 @@ function addnewuser($username, $password) {
     global $mysqli;
     $prepared_sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $mysqli->prepare($prepared_sql);
-    $stmt->bind_param("ss", $username, $hashed_password);
+    $stmt->bind_param("ss", $username, $password);
     if ($stmt->execute()) return TRUE;
     return FALSE;
 }

@@ -1,5 +1,5 @@
 <?php
-	require "database.php"
+	require "database.php";
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	if (isset($username) and isset($password)){
