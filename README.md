@@ -22,12 +22,12 @@ Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
 
 | Date       |   Version     |  Description |
 |------------|:-------------:|-------------:|
-| 24/03/2024 |  0.0          | Init draft   |
+| 31/03/2024 |  1.0          | Sprint 1   |
 
 
 # Overview
 
-The WAPH Team Project is a collaborative effort to create a "miniFacebook" online application employing full-stack web development technologies, secure programming techniques, and agile development processes. The project begins with Sprint 0, which is intended to build basic team communication and setup. During this phase, team members are required to become acquainted with one another and the project's objectives, clearly divide work, and rigorously document contributions. Effective cooperation requires the use of communication channels, notably Microsoft Teams, as well as frequent meetings for planning and progress monitoring.
+The WAPH Team Project is a collaborative effort to create a "miniFacebook" online application employing full-stack web development technologies, secure programming techniques, and agile development processes. The project begins with Sprint 0, which is intended to build basic team communication and setup. During this phase, team members are required to become acquainted with one another and the project's objectives, clearly divide work, and rigorously document contributions. Effective cooperation requires the use of communication channels, notably Microsoft Teams, as well as frequent meetings for planning and progress monitoring.Sprint 1 focuses on laying the groundwork for the online application, which includes database design and implementation, user registration, and login capabilities. Logged-in individuals may change their passwords, alter their profiles (including name, extra email, and phone number), and access database postings.
 
 # System Analysis
 
@@ -38,9 +38,32 @@ The goal of constructing a "miniFacebook" online application is to conduct a tho
 The high-level objectives for the WAPH Team Project, which focuses on developing a "miniFacebook" web application, include a variety of functions required to create a user-friendly and secure social networking platform. At its heart, the system must allow users to safely register accounts, verify themselves, and efficiently maintain their profiles. It should enable user interactions by allowing them to connect with friends, exchange posts, photographs, and comments, and manage the privacy settings of their material. Furthermore, the system should be scalable to meet a rising user base, allowing it to manage increased traffic and data quantities effectively. Security is critical, needing strong safeguards such as encryption for sensitive data, secure authentication procedures, and frequent audits to detect and remediate possible flaws. Usability is another critical criterion, requiring an intuitive user interface, smooth navigation, and responsive design to improve the entire user experience. These high-level objectives form the foundation for the creation of a full "miniFacebook" application that satisfies user expectations while following to best practices in web development, security, and user interface design.
 
 
+# System Design
+
+## Sprint 1
+## Use-Case Realization
+
+   * Implement user registration functionality
+   * Develop user login system
+   * Enable users to change their passwords
+   * Allow users to edit their profiles (name, additional email, phone)
+   * Enable logged-in users to view posts from the database
+
+## Database 
+
+   * Refine database design based on Sprint 1 requirements
+   * Implement database schema for user management and posting features
+   * Populate users table with sample data for testing
+
+## User Interface
+
+   * Design and implement user registration form
+   * Develop login form for user authentication
+   * Create UI elements for password change and profile editing
+   * Design post viewing interface for logged-in users
+
 # Security analysis
 
-_Include a brief explanation of your implementation and the security aspects based on the following questions:_
 
 *  How did you apply the security programming principles in your project?
 To maintain a safe and trustworthy system, we followed a number of security programming standards throughout this project. We guaranteed the security and integrity of data in transit by integrating session management with PHP sessions and secure communication over HTTPS. Input validation is done implicitly, and SQL queries are prepared to prevent SQL injection threats. Furthermore, hashing passwords (albeit it is inferred rather than expressly stated that hashing is performed before saving passwords in the database) and using HTTPS (indicated by the secure cookie feature) are consistent with the ideas of least privilege and defense in depth.
@@ -117,6 +140,35 @@ Duration: 19/03/2024-24/03/2024
 
 * Conduct assignment Estimation: We understood the significance of appropriately assessing the time and effort necessary for each assignment. To improve this process, we may use approaches like as story points or time-based estimates to ensure that jobs are properly scoped and planned for completion within the sprint period.
 
+### Sprint 1
+
+Duration: 25/03/2024-31/03/2024
+
+#### Completed Tasks: 
+
+1. Database Design and Implementation
+2. User Registration Functionality
+3. User Login Functionality
+4. Password Change Feature
+5. Profile Editing Feature (Name, Additional Email, Phone)
+6. Viewing Posts from the Database
+
+
+#### Contributions: 
+
+1. Amit, 6 commits, 5 hours, contributed in All the tasks.
+2. Mohan, 6 commits, 5 hours, contributed in All the tasks.
+3. Taraka , 6 commits, 5 hours, contributed in All the tasks.
+
+
+#### Sprint Retrospection:
+
+
+| Good     |   Could have been better    |  How to improve?  |
+|----------|:---------------------------:|------------------:|
+|Well-defined tasks |More detailed testing|Set clearer deadlines|
+
+
 # Appendix
 
 Include the content (in text, not as images) of the SQL files and all source code of your PHP files (with the file name). 
@@ -124,17 +176,58 @@ Included `database-data.sql`
 
 ```sql
 -- if the table exists, delete it
-drop table if exists users;
+DROP TABLE IF EXISTS users;
 
 -- create a new table
-create table users(
-    username varchar(50) PRIMARY KEY,
-    password varchar(100) NOT NULL);
+CREATE TABLE users(
+    username VARCHAR(100) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    fullname VARCHAR(100),
+    otheremail VARCHAR(100),
+    phone VARCHAR(15)
+);
 
 -- insert data to the table users
-LOCK TABLES users WRITE;
-INSERT INTO users(username,password) values ('admin', md5('123'));
-UNLOCK TABLES;
+
+INSERT INTO users(username, password) VALUES ('admin', md5('123'));
+INSERT INTO users(username, password) VALUES ('test', md5('test'));
+
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE posts(
+    postID VARCHAR(100) PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    content VARCHAR(100),
+    posttitle VARCHAR(100),
+    owner VARCHAR(100),
+    FOREIGN KEY (owner) REFERENCES users (username) ON DELETE CASCADE
+);
+
+-- if the table exists, delete it
+DROP TABLE IF EXISTS comments;
+
+-- create a new table
+CREATE TABLE comments(
+    commentID VARCHAR(100) PRIMARY KEY,
+    content VARCHAR(255) NOT NULL,
+    postID VARCHAR(100),
+    commenter VARCHAR(100),
+    FOREIGN KEY (postID) REFERENCES posts (postID) ON DELETE CASCADE,
+    FOREIGN KEY (commenter) REFERENCES users (username) ON DELETE CASCADE
+);
+
+-- if the table exists, delete it
+DROP TABLE IF EXISTS super_users;
+
+-- create a new table
+CREATE TABLE super_users (
+    username VARCHAR(100) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    fullname VARCHAR(100),
+    email VARCHAR(100)
+);
+
+
 ```
 
 
