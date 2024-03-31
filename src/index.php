@@ -11,6 +11,7 @@
 
 	session_start();  
 
+	require "database.php"
 	if (isset($_POST["username"]) and isset($_POST["password"])){
 		if (checklogin_mysql($_POST["username"],$_POST["password"])) {
 			$_SESSION['authenticated'] = TRUE;
@@ -37,22 +38,6 @@
 }
 
 
-	function checklogin_mysql($username, $password) {
-		$mysqli = new mysqli('localhost','team3','1234','waph_team');
-		if($mysqli->connect_errno){
-			printf("Database connection failed: %s\n", $mysqli->connect_errno);
-			exit();
-		}
-		$sql = "SELECT * FROM users WHERE username=? AND password = md5(?)";
-		$stmt = $mysqli->prepare($sql);
-		$stmt->bind_param("ss", $username, $password);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		if($result->num_rows ==1)
-			return TRUE;
-		return FALSE;
-  	}
-
 ?>
 		<h2> Welcome <?php echo htmlentities($_SESSION['username']); ?> !</h2>
-		<a href="logout.php">logout</a>
+		<a href="changepasswordform.php">Change password</a> | <a href="profile.php">Edit profile</a> | <a href="logout.php">logout</a>
