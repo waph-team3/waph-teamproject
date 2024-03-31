@@ -59,4 +59,40 @@ function updatePassword($username, $newPassword) {
     }
 }
 
+// Function to update user profile
+function updateUserProfile($username, $fullname, $otheremail, $phone) {
+    $mysqli = new mysqli('localhost','team3','1234','waph_team');
+    
+    if ($mysqli->connect_errno) {
+        printf("Connect failed: %s\n", $mysqli->connect_error);
+        exit();
+    }
+    $prepared_sql = "UPDATE users SET fullname = ?, otheremail = ?, phone = ? WHERE username = ?";
+    $stmt = $mysqli->prepare($prepared_sql);
+    $stmt->bind_param("ssss", $fullname, $otheremail, $phone, $username);
+    
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function fetchPosts() {
+    global $mysqli;
+    $posts = array();
+
+    $sql = "SELECT * FROM posts";
+    $result = $mysqli->query($sql);
+
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $posts[] = $row;
+        }
+    }
+
+    return $posts;
+}
+
 ?>
