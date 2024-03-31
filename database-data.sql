@@ -1,12 +1,27 @@
 -- if the table exists, delete it
-drop table if exists users;
+DROP TABLE IF EXISTS users;
 
 -- create a new table
-create table users(
-	username varchar(50) PRIMARY KEY,
-	password varchar(100) NOT NULL);
+CREATE TABLE users(
+	username VARCHAR(100) PRIMARY KEY,
+	password VARCHAR(100) NOT NULL,
+	fullname VARCHAR(100),
+	otheremail VARCHAR(100),
+	phone VARCHAR(15)
+);
 
 -- insert data to the table users
-LOCK TABLES users WRITE;
-INSERT INTO users(username,password) values ('admin', md5('123'));
-UNLOCK TABLES;
+
+INSERT INTO users(username, password) VALUES ('admin', md5('123'));
+INSERT INTO users(username, password) VALUES ('test', md5('test'));
+
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE posts(
+	postID VARCHAR(100) PRIMARY KEY,
+	title VARCHAR(100) NOT NULL,
+	content VARCHAR(100),
+	posttitle VARCHAR(100),
+	owner VARCHAR(100),
+	FOREIGN KEY (owner) REFERENCES users (username) ON DELETE CASCADE
+);
