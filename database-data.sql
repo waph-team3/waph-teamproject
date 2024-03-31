@@ -39,3 +39,14 @@ CREATE TABLE comments(
     FOREIGN KEY (commenter) REFERENCES users (username) ON DELETE CASCADE
 );
 
+-- if the table exists, delete it
+DROP TABLE IF EXISTS super_users;
+
+-- create a new table
+CREATE TABLE super_users (
+    username VARCHAR(100) PRIMARY KEY,
+    password VARCHAR(100) NOT NULL,
+    fullname VARCHAR(100),
+    email VARCHAR(100)
+);
+
