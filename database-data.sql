@@ -25,3 +25,17 @@ CREATE TABLE posts(
 	owner VARCHAR(100),
 	FOREIGN KEY (owner) REFERENCES users (username) ON DELETE CASCADE
 );
+
+-- if the table exists, delete it
+DROP TABLE IF EXISTS comments;
+
+-- create a new table
+CREATE TABLE comments(
+    commentID VARCHAR(100) PRIMARY KEY,
+    content VARCHAR(255) NOT NULL,
+    postID VARCHAR(100),
+    commenter VARCHAR(100),
+    FOREIGN KEY (postID) REFERENCES posts (postID) ON DELETE CASCADE,
+    FOREIGN KEY (commenter) REFERENCES users (username) ON DELETE CASCADE
+);
+
