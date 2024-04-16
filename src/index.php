@@ -110,8 +110,7 @@
             echo "<p>No posts found.</p>";
         }
         ?>
-        <hr>
-
+        <hr> 
         <a class="btn" href="changepasswordform.php">Change Password</a> 
         <a class="btn" href="profile.php">Edit Profile</a> 
         <a class="btn" href="logout.php">Logout</a>
