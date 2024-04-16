@@ -115,6 +115,7 @@
         <a class="btn" href="changepasswordform.php">Change Password</a> 
         <a class="btn" href="profile.php">Edit Profile</a> 
         <a class="btn" href="logout.php">Logout</a>
+        <a class="btn" href="newpost.php">Add Post</a>
     </div>
 </body>
 </html>
