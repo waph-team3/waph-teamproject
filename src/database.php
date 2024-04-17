@@ -95,6 +95,34 @@ function fetchPosts() {
     return $posts;
 }
 
+// Function to fetch a post by its ID from the database
+function fetchPostById($postID) {
+    global $mysqli;
+    
+    // Prepare and execute query to fetch the post
+    $stmt = $mysqli->prepare("SELECT title, content, owner FROM posts WHERE postID = ?");
+    $stmt->bind_param("i", $postID);
+    $stmt->execute();
+    $stmt->bind_result($title, $content, $owner);
+    
+    // Fetch the result
+    $stmt->fetch();
+    
+    // Create an associative array to hold the post details
+    $post = array(
+        'title' => $title,
+        'content' => $content,
+        'owner' => $owner
+    );
+    
+    // Close the statement
+    $stmt->close();
+    
+    // Return the post details
+    return $post;
+}
+
+
     function addNewPost($title, $content, $username) {
     // Perform input validation (you can add more validation as needed)
         global $mysqli;
@@ -119,6 +147,35 @@ function fetchPosts() {
             return "Error preparing statement: " . $mysqli->error;
         }
     }
+}
+
+// Function to update a post in the database
+function updatePost($postID, $title, $content) {
+    global $mysqli;
+    
+    // Prepare and execute query to update the post
+    $stmt = $mysqli->prepare("UPDATE posts SET title = ?, content = ? WHERE postID = ?");
+    $stmt->bind_param("sss", $title, $content, $postID);
+    $stmt->execute();
+    $stmt->close();
+}
+
+function deletePost($postID) {
+    global $mysqli;
+    
+    // Prepare and execute query to delete the post
+    $stmt = $mysqli->prepare("DELETE FROM posts WHERE postID = ?");
+    $stmt->bind_param("s", $postID);
+    $stmt->execute();
+
+    // Check for errors
+    if ($stmt->error) {
+        echo "Error deleting post: " . $stmt->error;
+    } else {
+        echo "Post deleted successfully.";
+    }
+    
+    $stmt->close();
 }
 
 
