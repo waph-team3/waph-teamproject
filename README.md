@@ -89,7 +89,7 @@ The offered code samples do not explicitly explain role separation. However, est
 
 
 # Demo (screenshots)
-
+## Sprint 0  
 * A screenshot demo for the login page working on the HTTPS team's local domain  
 ![Form.png-](images/Form.png)
 
@@ -103,6 +103,34 @@ The offered code samples do not explicitly explain role separation. However, est
 ![Amitindex.png-](images/Amitindex.png)
 ![Mohanindex.png-](images/Mohanindex.png)
 ![Tarakindex.png-](images/Tarakindex.png)
+
+## Sprint 1  
+
+
+
+* A index page showing the posts from database.  
+
+
+![S.png-](images/s11.png)  
+
+
+
+* A screenshot that shows the user can change password.  
+
+![S.png-](images/s12.png)
+
+
+* Screenshots showcasing the edit profile functionalities.  
+
+
+![S.png-](images/s13.png)  
+
+
+![S.png-](images/s14.png)
+
+## Sprint 2
+
+
 
 # Software Process Management
 
