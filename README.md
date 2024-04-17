@@ -22,7 +22,7 @@ Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
 
 | Date       |   Version     |  Description |
 |------------|:-------------:|-------------:|
-| 31/03/2024 |  1.0          | Sprint 1   |
+| 16/04/2024 |  2.0          | Sprint 2  |
 
 
 # Overview
@@ -167,6 +167,31 @@ Duration: 25/03/2024-31/03/2024
 | Good     |   Could have been better    |  How to improve?  |
 |----------|:---------------------------:|------------------:|
 |Well-defined tasks |More detailed testing|Set clearer deadlines|
+
+### Sprint 2
+
+Duration: 08/04/2024-16/04/2024
+
+#### Completed Tasks: 
+
+1. Database Design and Implementation 
+2. Permitting logged-in users to create new posts and comment on any existing posts
+3. Allowing logged-in users to modify (edit or delete) their own posts
+4. Ensuring that users cannot edit posts authored by other users
+
+
+#### Contributions: 
+
+1. Amit, 6 commits, 4 hours, contributed in All the tasks.
+2. Mohan, 6 commits, 4 hours, contributed in All the tasks.
+3. Taraka , 6 commits, 4 hours, contributed in All the tasks.
+
+
+#### Sprint Retrospection:
+
+| Strengths     |   Opportunities for Improvement    |  Suggestions for Enhancement  |
+|---------------|:----------------------------------:|------------------------------:|
+|Effective team collaboration |Task prioritization   |Implement task estimation techniques|
 
 
 # Appendix
