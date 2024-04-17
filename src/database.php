@@ -101,7 +101,7 @@ function fetchPostById($postID) {
     
     // Prepare and execute query to fetch the post
     $stmt = $mysqli->prepare("SELECT title, content, owner FROM posts WHERE postID = ?");
-    $stmt->bind_param("i", $postID);
+    $stmt->bind_param("s", $postID);
     $stmt->execute();
     $stmt->bind_result($title, $content, $owner);
     
