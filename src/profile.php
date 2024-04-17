@@ -6,17 +6,17 @@ require "database.php";
 $username = ""; // Initialize variables to store current user's data
 $fullname = "";
 $otheremail = "";
-
+$phone = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['otheremail'])) {
+    if (isset($_POST['username']) && isset($_POST['fullname']) && isset($_POST['otheremail']) && isset($_POST['phone'])) {
         $username = $_POST['username'];
         $fullname = $_POST['fullname'];
         $otheremail = $_POST['otheremail'];
-
+        $phone = $_POST['phone'];
 
         // Update user's profile
-        if (updateUserProfile($username, $fullname, $otheremail, ) {
+        if (updateUserProfile($username, $fullname, $otheremail, $phone)) {
             echo "Profile updated successfully.";
         } else {
             echo "Failed to update profile.";
@@ -42,6 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="fullname" value="<?php echo $fullname; ?>"><br>
         <label>Additional Email:</label><br>
         <input type="text" name="otheremail" value="<?php echo $otheremail; ?>"><br>
+        <label>Phone:</label><br>
+        <input type="text" name="phone" value="<?php echo $phone; ?>"><br><br>
         <input type="submit" value="Update Profile">
     </form>
 </body>
