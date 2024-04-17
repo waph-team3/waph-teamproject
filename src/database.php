@@ -95,4 +95,31 @@ function fetchPosts() {
     return $posts;
 }
 
+    function addNewPost($title, $content, $username) {
+    // Perform input validation (you can add more validation as needed)
+        global $mysqli;
+    if (empty($title) || empty($content)) {
+        return "Please fill out all fields.";
+    } else {
+        // Insert the new post into the database
+        $postID = uniqid(); // Generate a unique postID
+        $owner = $username; // Assuming the username is passed to the function
+        $sql = "INSERT INTO posts (postID, title, content, owner) VALUES (?, ?, ?, ?)";
+        
+        if ($stmt = $mysqli->prepare($sql)) {
+            $stmt->bind_param("ssss", $postID, $title, $content, $owner);
+            if ($stmt->execute()) {
+                $stmt->close();
+                return "Post added successfully!";
+            } else {
+                $stmt->close();
+                return "Error adding post: " . $mysqli->error;
+            }
+        } else {
+            return "Error preparing statement: " . $mysqli->error;
+        }
+    }
+}
+
+
 ?>
