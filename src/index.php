@@ -14,6 +14,32 @@ session_set_cookie_params([
 // Include database configuration
 require "database.php";
 
+// Function to fetch comments
+// function fetchComments($mysqli, $postID) {
+//     $stmt = $mysqli->prepare("SELECT content, commenter FROM comments WHERE postID = ?");
+//     $stmt->bind_param("s", $postID);
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+//     $comments = [];
+//     while ($row = $result->fetch_assoc()) {
+//         $comments[] = $row;
+//     }
+//     $stmt->close();
+//     return $comments;
+// }
+
+// Function to add a comment
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment']) && isset($_POST['postID'])) {
+    $comment = $_POST['comment'];
+    $postID = $_POST['postID'];
+    $commenter = $_SESSION['username']; // Username from session
+    $stmt = $mysqli->prepare("INSERT INTO comments (commentID, content, postID, commenter) VALUES (UUID(), ?, ?, ?)");
+    $stmt->bind_param("sss", $comment, $postID, $commenter);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: index.php"); // Redirect to avoid resubmission
+    exit;
+}
 
 // Check if login credentials are provided
 if (isset($_POST["username"]) && isset($_POST["password"])) {
@@ -86,6 +112,10 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
         .post p {
             color: #666;
         }
+        .comment {
+            margin-left: 20px;
+            font-size: 0.9em;
+        }
         .btn {
             display: inline-block;
             padding: 8px 12px;
@@ -96,6 +126,9 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
         }
         .btn:hover {
             background-color: #0056b3;
+        }
+        form.comment-form {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -126,6 +159,22 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
                     echo "<button class='btn' type='submit' name='delete'>Delete</button>";
                     echo "</form>";
                 }
+
+                // Display comments
+                $comments = fetchComments($mysqli, $post['postID']);
+                if ($comments) {
+                    echo "<div>Comments:</div>";
+                    foreach ($comments as $comment) {
+                        echo "<div class='comment'><strong>" . htmlentities($comment['commenter']) . ":</strong> " . htmlentities($comment['content']) . "</div>";
+                    }
+                }
+
+                // Add comment form
+                echo "<form class='comment-form' method='post' action=''>";
+                echo "<input type='hidden' name='postID' value='" . $post['postID'] . "'>";
+                echo "<textarea name='comment' rows='2' cols='50' placeholder='Write a comment...' required></textarea><br>";
+                echo "<button class='btn' type='submit'>Add Comment</button>";
+                echo "</form>";
 
                 echo "</div>";
             }

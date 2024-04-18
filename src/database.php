@@ -178,5 +178,36 @@ function deletePost($postID) {
     $stmt->close();
 }
 
+function fetchComments($mysqli, $postID) {
+    // Prepare SQL query to select comments for the specified postID
+    $query = "SELECT content, commenter FROM comments WHERE postID = ?";
+    
+    // Prepare the SQL statement
+    $stmt = $mysqli->prepare($query);
+    
+    // Bind the postID parameter to the prepared statement
+    $stmt->bind_param("s", $postID);
+    
+    // Execute the prepared statement
+    $stmt->execute();
+    
+    // Get result set from the executed statement
+    $result = $stmt->get_result();
+    
+    // Initialize an empty array to store comments
+    $comments = [];
+    
+    // Fetch each row from the result set
+    while ($row = $result->fetch_assoc()) {
+        // Add the fetched comment to the comments array
+        $comments[] = $row;
+    }
+    
+    // Close the prepared statement
+    $stmt->close();
+    
+    // Return the array of comments
+    return $comments;
+}
 
 ?>
