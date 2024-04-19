@@ -130,6 +130,22 @@ The offered code samples do not explicitly explain role separation. However, est
 
 ## Sprint 2
 
+* A index page showing the posts and comments from database.  
+
+
+![S.png-](images/s21.png)  
+
+
+
+* A index page showing the posts and comments from database and edit and deletion option only to the owner of that post.  
+
+![S.png-](images/s22.png)
+
+
+* Screenshots showcasing the edit post functionalities.  
+
+
+![S.png-](images/s23.png) 
 
 
 # Software Process Management
