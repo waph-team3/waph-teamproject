@@ -14,6 +14,8 @@ CREATE TABLE users(
 -- insert data to the table users
 INSERT INTO users(username, password, fullname, otheremail, phone) VALUES ('admin', MD5('123'), 'Administrator', 'admin@example.com', '1234567890');
 INSERT INTO users(username, password, fullname, otheremail, phone) VALUES ('test', MD5('test'), 'Test User', 'test@example.com', '9876543210');
+INSERT INTO users(username, password, fullname, otheremail, phone,disabled) VALUES ('test1', MD5('test1'), 'Test User', 'test@example.com', '9876543210','0');
+INSERT INTO users(username, password, fullname, otheremail, phone,disabled) VALUES ('test2', MD5('test2'), 'Test User', 'test@example.com', '9876543210','1');
 
 -- if the table exists, delete it
 DROP TABLE IF EXISTS posts;
@@ -51,3 +53,6 @@ CREATE TABLE super_users (
     fullname VARCHAR(100),
     email VARCHAR(100)
 );
+
+
+INSERT INTO super_users(username, password, fullname, email) VALUES ('super', MD5('123'), 'Super user', 'su@example.com');
