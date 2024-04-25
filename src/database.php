@@ -43,20 +43,57 @@ function addNewUser($username, $password, $fullname, $otheremail) {
 
 
 function checklogin_mysql($username, $password) {
-		$mysqli = new mysqli('localhost','team3','1234','waph_team');
-		if($mysqli->connect_errno){
-			printf("Database connection failed: %s\n", $mysqli->connect_errno);
-			exit();
-		}
-		$prepared_sql = "SELECT * FROM users WHERE username=? AND password = md5(?)";
-		$stmt = $mysqli->prepare($prepared_sql);
-		$stmt->bind_param("ss", $username, $password);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		if($result->num_rows ==1)
-			return TRUE;
-		return FALSE;
-  	}
+    global $mysqli;
+    
+    // Hash the password using md5 for comparison
+    $hashed_password = md5($password);
+    
+    // Check if the user is enabled in the users table
+    $prepared_sql_users = "SELECT * FROM users WHERE username=? AND password=?";
+    $stmt_users = $mysqli->prepare($prepared_sql_users);
+    $stmt_users->bind_param("ss", $username, $hashed_password);
+    $stmt_users->execute();
+    $result_users = $stmt_users->get_result();
+    
+    // If the user is found in the users table
+    if($result_users->num_rows == 1) {
+        $user = $result_users->fetch_assoc();
+        if ($user['disabled'] == 1) {
+            // User is disabled
+            return 'disabled';
+        } else {
+            // User is enabled, determine user type and return it
+            return 'regularuser';
+        }
+    }
+    
+    // Check in the super_users table
+    $prepared_sql_superusers = "SELECT * FROM super_users WHERE username=? AND password=?";
+    $stmt_superusers = $mysqli->prepare($prepared_sql_superusers);
+    $stmt_superusers->bind_param("ss", $username, $hashed_password);
+    $stmt_superusers->execute();
+    $result_superusers = $stmt_superusers->get_result();
+    
+    // If the user is found in the super_users table
+    if($result_superusers->num_rows == 1) {
+        return 'superuser'; // Return 'superuser' if the user is a superuser
+    }
+    
+    return FALSE; // Return FALSE if the user is not found in either table
+}
+
+// Function to check if a user is disabled
+function isUserDisabled($username) {
+    global $mysqli;
+    $stmt = $mysqli->prepare("SELECT disabled FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->bind_result($disabled);
+    $stmt->fetch();
+    $stmt->close();
+    return $disabled; // Returns true if the user is disabled, false otherwise
+}
+
 
 function updatePassword($username, $newPassword) {
     $mysqli = new mysqli('localhost','team3','1234','waph_team');

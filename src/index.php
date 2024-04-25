@@ -43,18 +43,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment']) && isset($_
 
 // Check if login credentials are provided
 if (isset($_POST["username"]) && isset($_POST["password"])) {
-    if (checklogin_mysql($_POST["username"], $_POST["password"])) {
+    $login_type = checklogin_mysql($_POST["username"], $_POST["password"]);
+    if ($login_type === 'regularuser' || $login_type === 'superuser') {
         // If login is successful, set session variables
         $_SESSION['authenticated'] = true;
         $_SESSION['username'] = $_POST["username"];
         $_SESSION['browser'] = $_SERVER["HTTP_USER_AGENT"];
+        $_SESSION['usertype'] = $login_type; // Set session variable for user type
+    } elseif ($login_type === 'disabled') {
+        // If the user is disabled, show a message and redirect to login form
+        echo "<script>alert('Your account is disabled. Please contact the administrator.');</script>";
+        header("Refresh: 0; url=form.php");
+        exit();
     } else {
-        // If login fails, destroy session and show error message
+        // If login fails (user not found or incorrect password), destroy session and show error message
         session_destroy();
-        echo "<script>alert('Invalid username/password');window.location='form.php';</script>";
-        die();
+        echo "<script>alert('Invalid username/password');</script>";
+        header("Refresh: 0; url=form.php");
+        exit();
     }
 }
+
 
 // Check if user is logged in
 if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
@@ -74,6 +83,45 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
     die();
 }
 
+// Function to disable a user
+function disableUser($username) {
+    global $mysqli;
+    $stmt = $mysqli->prepare("UPDATE users SET disabled = 1 WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->close();
+}
+
+// Function to enable a user
+function enableUser($username) {
+    global $mysqli;
+    $stmt = $mysqli->prepare("UPDATE users SET disabled = 0 WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $stmt->close();
+}
+
+// Check if action is requested and the user is a superuser
+if ($_SESSION['usertype'] === 'superuser' && isset($_GET['action']) && isset($_GET['username'])) {
+    $action = $_GET['action'];
+    $username = $_GET['username'];
+    if ($action === 'disable') {
+        disableUser($username);
+    } elseif ($action === 'enable') {
+        enableUser($username);
+    }
+}
+
+// Function to fetch users
+function fetchUsers() {
+    global $mysqli;
+    $users = [];
+    $result = $mysqli->query("SELECT username FROM users");
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row['username'];
+    }
+    return $users;
+}
 ?>
 
 <!DOCTYPE html>
@@ -135,7 +183,7 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
 <body>
     <div class="container">
         <h2>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</h2>
-
+        
         <h2>Posts</h2>
         <hr>
         <?php
@@ -187,6 +235,30 @@ if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
         <a class="btn" href="profile.php">Edit Profile</a> 
         <a class="btn" href="logout.php">Logout</a>
         <a class="btn" href="newpost.php">Add Post</a>
+
+        <!-- Additional functionality for superuser -->
+        <?php if ($_SESSION['usertype'] === 'superuser'): ?>
+            <h2>Manage Users</h2>
+            <h3>User List</h3>
+            <ul>
+                <?php $users = fetchUsers();
+                foreach ($users as $user) {
+                    $disabled = isUserDisabled($user); // Check if the user is disabled
+                    echo "<li>$user ";
+                    if ($user !== $_SESSION['username']) { // Exclude the current user from actions
+                        if ($disabled) {
+                            // If the user is disabled, display the enable option
+                            echo "<a href='?action=enable&username=$user'>Enable</a>";
+                        } else {
+                            // If the user is enabled, display the disable option
+                            echo "<a href='?action=disable&username=$user'>Disable</a>";
+                        }
+                    }
+                    echo "</li>";
+                } ?>
+            </ul>
+        <?php endif; ?>
+
     </div>
 </body>
 </html>
