@@ -235,6 +235,7 @@ function fetchUsers() {
         <a class="btn" href="profile.php">Edit Profile</a> 
         <a class="btn" href="logout.php">Logout</a>
         <a class="btn" href="newpost.php">Add Post</a>
+        <a class="btn" href="chat.html">Chat Room</a>
 
         <!-- Additional functionality for superuser -->
         <?php if ($_SESSION['usertype'] === 'superuser'): ?>
