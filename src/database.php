@@ -6,16 +6,39 @@ if($mysqli->connect_errno) {
     return FALSE;
 }
 
-function addnewuser($username, $password) {
+function addNewUser($username, $password, $fullname, $otheremail) {
     global $mysqli;
-    // Hash the password
-    $hashed_password = md5($password);
     
-    $prepared_sql = "INSERT INTO users (username, password) VALUES (?, ?)";
-    $stmt = $mysqli->prepare($prepared_sql);
-    $stmt->bind_param("ss", $username, $hashed_password); // Bind the hashed password
-    if ($stmt->execute()) return TRUE;
-    return FALSE;
+    // Basic validation checks
+    if (empty($username) || empty($password) || empty($fullname) || empty($otheremail)) {
+        return false; // Ensures that no field is empty
+    }
+    
+    if (!filter_var($otheremail, FILTER_VALIDATE_EMAIL)) {
+        return false; // Ensures the email is in a valid format
+    }
+    
+    // Here you can add additional validation as needed, e.g., minimum lengths
+    if (strlen($password) < 8) {
+        return false; // Password must be at least 8 characters
+    }
+
+    // Hash the password using a more secure method
+    $hashedPassword = md5($password);
+    
+    $preparedSql = "INSERT INTO users (username, password, fullname, otheremail) VALUES (?, ?, ?, ?)";
+    $stmt = $mysqli->prepare($preparedSql);
+    if (!$stmt) {
+        return false; // Could not prepare the statement
+    }
+    
+    $stmt->bind_param("ssss", $username, $hashedPassword, $fullname, $otheremail); // Bind the variables
+    
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 

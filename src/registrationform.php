@@ -62,8 +62,11 @@
       echo "Visited time: " . date("Y-m-d h:i:sa");
     ?>
     <form action="addnewuser.php" method="POST" class="form login">
-      Username: <input type="text" class="text_field" name="username"/><br>
-      Password: <input type="password" class="text_field" name="password"> <br>
+      <input type="text" class="text_field" id="fullname" name="fullname" placeholder="Full Name" required><br>
+      <input type="text" class="text_field" id="email" name="email" placeholder="Email" required><br>
+      <input type="text" class="text_field" id="username" name="username" placeholder="Username" required><br>
+      <input type="password" class="text_field" id="password" name="password" placeholder="Password" required><br>
+      <input type="password" class="text_field" id="confirmPassword" placeholder="Confirm Password" required><br>
       <button class="button" type="submit">Register</button>
     </form>
   </div>
