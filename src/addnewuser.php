@@ -47,7 +47,7 @@ function test_input($data) {
 <body>
     <div class="container">
         <br>
-        <a href="login.php" class="login-link">Login here</a>
+        <a href="form.php" class="login-link">Login here</a>
     </div>
 </body>
 </html>
