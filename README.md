@@ -18,6 +18,8 @@ Source code repository (private access): <https://github.com/waph-team3/waph-tea
 
 Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
 
+Projet Video: <https://github.com/waph-team3/waph-teamproject/waphteam3.mp4>  
+
 ## Revision History
 
 | Date       |   Version     |  Description |
@@ -272,6 +274,22 @@ Duration: 17/04/2024-25/04/2024
 | Good     |   Could have been better    |  How to improve?  |
 |----------|:---------------------------:|------------------:|
 |Well-defined tasks |More detailed testing|Set clearer deadlines|
+
+
+## Security and Non-technical Requirements
+
+- **Security**: The web application is HTTPS secured with a proper certificate provided for local IP and domain addresses. Passwords sent to the database are hashed, as seen in the `database.php` file. This file contains only functions related to the database, and non-root user details have been used to access the database. Every SQL query has a prepared statement to enhance page security as much as possible.
+
+- **Input Validation**: Input validation has been implemented on both the server and client sides, as well as in the database. This includes the registration page, where data is sanitized using built-in functions like `trim()`, `htmlentities()`, and special functions to prevent XSS attacks.
+
+- **Database Design**: Initially, a database account was created where a database and then a user for it were created, as seen in the file in the appendix. Furthermore, a table named `users` was created to store user details. To secure the database, prepared statements were used for every query execution, and a separate `database.php` file was maintained that contains only database methods.
+
+- **Front-end Development**: HTML and CSS were used for visual purposes, along with JavaScript for client-side validations. Additionally, PHP was utilized for server-side functionality. A `styles.css` file was created and linked on every page to maintain a consistent theme across all pages.
+
+- **Session Management**: `session_start()` was used on all pages except the login and registration ones for session management. Session authentication was implemented to ensure users must log in before accessing other pages. A session hijacking prevention mechanism was also added where the application checks the session browser and HTTP user-agent to verify the user’s identity and grants access only if they match, thereby preventing session hijacking by attackers.
+
+- **CSRF Protection**: CSRF protection was included on two pages where users can update their information: `changepasswordform.php` and `updateprofile.php`. First, a random value was assigned to a new session variable. Then, a hidden element was added in the form that sends the CSRF token generated from this session. When the form is submitted, the page checks whether the CSRF token from the session matches the one passed in the form. If they match, the form is submitted; otherwise, it is rejected.
+
 
 # Appendix
 
