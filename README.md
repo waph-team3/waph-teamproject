@@ -18,7 +18,7 @@ Source code repository (private access): <https://github.com/waph-team3/waph-tea
 
 Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
 
-Projet Video: <https://github.com/waph-team3/waph-teamproject/waphteam3.mp4>  
+Projet Video: <https://github.com/waph-team3/waph-teamproject/blob/main/Team3_demonstration.mp4>  
 
 ## Revision History
 
