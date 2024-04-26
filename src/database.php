@@ -139,21 +139,51 @@ function updateUserProfile($username, $fullname, $otheremail, $phone) {
 }
 
 
+// function fetchPosts() {
+//     global $mysqli;
+//     $posts = array();
+
+//     $sql = "SELECT * FROM posts";
+//     $result = $mysqli->query($sql);
+
+//     if ($result->num_rows > 0) {
+//         while ($row = $result->fetch_assoc()) {
+//             $posts[] = $row;
+//         }
+//     }
+
+//     return $posts;
+// }
+
 function fetchPosts() {
     global $mysqli;
     $posts = array();
 
+    // Prepare the SQL query with a parameter placeholder
     $sql = "SELECT * FROM posts";
-    $result = $mysqli->query($sql);
+    $stmt = $mysqli->prepare($sql);
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $posts[] = $row;
+    if ($stmt) {
+        // Execute the prepared statement
+        $stmt->execute();
+
+        // Get the result set
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Fetch rows as associative array and add them to $posts array
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
         }
+
+        // Close the statement
+        $stmt->close();
     }
 
     return $posts;
 }
+
 
 // Function to fetch a post by its ID from the database
 function fetchPostById($postID) {

@@ -1,4 +1,36 @@
 <?php
+
+session_start();
+
+if (!isset($_SESSION['authenticated']) or $_SESSION['authenticated'] != TRUE) {
+        session_destroy();
+        echo "<script>alert('Nice try!! You have to login first!')</script>";
+        header("Refresh: 0; url=login.php");
+        die();
+    }
+
+    if ($_SESSION['browser'] != $_SERVER["HTTP_USER_AGENT"]) {
+    session_destroy();
+    echo "<script>alert('Alert! Alert ! Session hijacking is detected')</script>";
+    header("Refresh: 0; url=login.php");
+    die();
+}
+
+
+// Generate and store CSRF token in the session if it doesn't exist
+if (!isset($_SESSION['nocsrftoken'])) {
+    $_SESSION['nocsrftoken'] = bin2hex(openssl_random_pseudo_bytes(32)); // Generate a random token
+}
+
+// Validate CSRF token on form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tokenFromForm = $_POST['nocsrftoken'] ?? '';
+    if (!hash_equals($_SESSION['nocsrftoken'], $tokenFromForm)) {
+        die("CSRF Token Validation Failed.");
+    }
+}
+
+
 require "database.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Change Password</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h2>Change Password</h2>
@@ -49,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="current_password"><br>
         <label>New Password:</label><br>
         <input type="password" name="new_password"><br><br>
+        <input type="hidden" name="nocsrftoken" value="<?php echo htmlspecialchars($_SESSION['nocsrftoken']); ?>">
         <input type="submit" value="Change Password">
     </form>
 </body>

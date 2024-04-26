@@ -1,6 +1,9 @@
 <?php
 // Start session
 session_start();
+if (!isset($_SESSION['nocsrftoken'])) {
+    $_SESSION['nocsrftoken'] = bin2hex(openssl_random_pseudo_bytes(32)); // Generate a random token
+}
 
 // Set session cookie parameters
 session_set_cookie_params([
@@ -11,22 +14,19 @@ session_set_cookie_params([
     'httponly' => true
 ]);
 
-// Include database configuration
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $tokenFromForm = $_POST['nocsrftoken'] ?? '';
+    if (!hash_equals($_SESSION['nocsrftoken'], $tokenFromForm)) {
+        die("CSRF Token Validation Failed.");
+    }
+}
+
+
+
 require "database.php";
 
-// Function to fetch comments
-// function fetchComments($mysqli, $postID) {
-//     $stmt = $mysqli->prepare("SELECT content, commenter FROM comments WHERE postID = ?");
-//     $stmt->bind_param("s", $postID);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     $comments = [];
-//     while ($row = $result->fetch_assoc()) {
-//         $comments[] = $row;
-//     }
-//     $stmt->close();
-//     return $comments;
-// }
+
 
 // Function to add a comment
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment']) && isset($_POST['postID'])) {
@@ -64,7 +64,20 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     }
 }
 
+if (isset($_POST["username"]) and isset($_POST["password"])){
+        $username = htmlspecialchars($_POST["username"]); // Sanitize input
+        $password = htmlspecialchars($_POST["password"]); // Sanitize input
 
+        if (checklogin_mysql($username,$password)) {
+            $_SESSION['authenticated'] = TRUE;
+            $_SESSION['username'] = $_POST["username"];
+            $_SESSION['browser'] = $_SERVER["HTTP_USER_AGENT"];
+        }else{
+            session_destroy();
+            echo "<script>alert('Invalid password/username');window.location='form.php';</script>";
+            die();
+        }
+    }
 // Check if user is logged in
 if (!isset($_SESSION['authenticated']) || $_SESSION['authenticated'] !== true) {
     // If not logged in, destroy session and redirect to login form
@@ -112,16 +125,37 @@ if ($_SESSION['usertype'] === 'superuser' && isset($_GET['action']) && isset($_G
     }
 }
 
-// Function to fetch users
+
+
 function fetchUsers() {
     global $mysqli;
     $users = [];
-    $result = $mysqli->query("SELECT username FROM users");
-    while ($row = $result->fetch_assoc()) {
-        $users[] = $row['username'];
+
+    // Prepare the SQL query with a parameter placeholder
+    $sql = "SELECT username FROM users";
+    $stmt = $mysqli->prepare($sql);
+
+    if ($stmt) {
+        // Execute the prepared statement
+        $stmt->execute();
+
+        // Bind result variables
+        $stmt->bind_result($username);
+
+        // Fetch rows and store usernames in $users array
+        while ($stmt->fetch()) {
+            $users[] = $username;
+        }
+
+        // Close the statement
+        $stmt->close();
     }
+
     return $users;
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -130,55 +164,7 @@ function fetchUsers() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #333;
-        }
-        .post {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .post h3 {
-            color: #333;
-        }
-        .post p {
-            color: #666;
-        }
-        .comment {
-            margin-left: 20px;
-            font-size: 0.9em;
-        }
-        .btn {
-            display: inline-block;
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 3px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        form.comment-form {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -198,11 +184,13 @@ function fetchUsers() {
                 // Show edit and delete buttons only for the owner of the post
                 if ($_SESSION['username'] === $post['owner']) {
                     echo "<form method='post' action='editpost.php'>";
+                    echo '<input type="hidden" name="nocsrftoken" value="' . htmlspecialchars($_SESSION['nocsrftoken']) . '">';
                     echo "<input type='hidden' name='postID' value='" . $post['postID'] . "'>";
                     echo "<button class='btn' type='submit' name='edit'>Edit</button>";
                     echo "</form>";
 
                     echo "<form method='post' action='deletepost.php' onsubmit='return confirm(\"Are you sure you want to delete this post?\")'>";
+                    echo '<input type="hidden" name="nocsrftoken" value="' . htmlspecialchars($_SESSION['nocsrftoken']) . '">';
                     echo "<input type='hidden' name='postID' value='" . $post['postID'] . "'>";
                     echo "<button class='btn' type='submit' name='delete'>Delete</button>";
                     echo "</form>";
@@ -219,6 +207,7 @@ function fetchUsers() {
 
                 // Add comment form
                 echo "<form class='comment-form' method='post' action=''>";
+                echo '<input type="hidden" name="nocsrftoken" value="' . htmlspecialchars($_SESSION['nocsrftoken']) . '">';
                 echo "<input type='hidden' name='postID' value='" . $post['postID'] . "'>";
                 echo "<textarea name='comment' rows='2' cols='50' placeholder='Write a comment...' required></textarea><br>";
                 echo "<button class='btn' type='submit'>Add Comment</button>";
@@ -235,7 +224,7 @@ function fetchUsers() {
         <a class="btn" href="profile.php">Edit Profile</a> 
         <a class="btn" href="logout.php">Logout</a>
         <a class="btn" href="newpost.php">Add Post</a>
-        <a class="btn" href="chat.html">Chat Room</a>
+        <a class="btn" href="chat.php">Chat Room</a>
 
         <!-- Additional functionality for superuser -->
         <?php if ($_SESSION['usertype'] === 'superuser'): ?>
