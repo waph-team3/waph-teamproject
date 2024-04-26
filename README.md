@@ -16,7 +16,7 @@
 
 Source code repository (private access): <https://github.com/waph-team3/waph-teamproject>
 
-Project homepage (public): <https://github.com/waph-team3/waph-team3.github.io>
+Project homepage (public): <https://github.com/waph-team3/waph-teamproject/blob/main/Welcome.pdf>
 
 Projet Video: <https://github.com/waph-team3/waph-teamproject/blob/main/Team3_demonstration.mp4>  
 
@@ -283,6 +283,8 @@ Duration: 17/04/2024-25/04/2024
 - **Input Validation**: Input validation has been implemented on both the server and client sides, as well as in the database. This includes the registration page, where data is sanitized using built-in functions like `trim()`, `htmlentities()`, and special functions to prevent XSS attacks.
 
 - **Database Design**: Initially, a database account was created where a database and then a user for it were created, as seen in the file in the appendix. Furthermore, a table named `users` was created to store user details. To secure the database, prepared statements were used for every query execution, and a separate `database.php` file was maintained that contains only database methods.
+
+- **Role-Based Access Control**: Role-based access control is implemented to differentiate between regular users and super users. Super users have access to administrative functionalities like enabling and disabling other users while regular users have limited access. Also a regular user cannot edit and delete the posts of other users.
 
 - **Front-end Development**: HTML and CSS were used for visual purposes, along with JavaScript for client-side validations. Additionally, PHP was utilized for server-side functionality. A `styles.css` file was created and linked on every page to maintain a consistent theme across all pages.
 
